@@ -87,3 +87,56 @@ window.addEventListener('resize', () => {
         msnry.layout();
     }, 200); // wait 200ms after resizing stops
 });
+
+function setTheme(theme) {
+    const link = document.getElementById("theme-style");
+    if (theme === "dark") {
+        link.href = "./css/dark.css";
+    } else {
+        link.href = "./css/style.css";
+    }
+    localStorage.setItem("theme", theme);
+}
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    // Apply saved theme on load
+    const savedTheme = localStorage.getItem("theme") || "light";
+    setTheme(savedTheme);
+
+    // Bind toggle button
+    const btn = document.getElementById("theme-toggle");
+    if (btn) {
+        btn.addEventListener("click", toggleTheme);
+    }
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    const themeLink = document.getElementById("theme-style");
+    const toggleButton = document.getElementById("theme-toggle");
+
+    // 1. Load saved theme (if any)
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark") {
+        themeLink.setAttribute("href", "./css/dark.css");
+        if (toggleButton) toggleButton.textContent = "☀️";
+    } else {
+        themeLink.setAttribute("href", "./css/style.css");
+        if (toggleButton) toggleButton.textContent = "🌙";
+    }
+
+    // 2. Handle button clicks
+    if (toggleButton) {
+        toggleButton.addEventListener("click", function () {
+            if (themeLink.getAttribute("href").includes("dark.css")) {
+                themeLink.setAttribute("href", "./css/style.css");
+                localStorage.setItem("theme", "light");
+                toggleButton.textContent = "🌙";
+            } else {
+                themeLink.setAttribute("href", "./css/dark.css");
+                localStorage.setItem("theme", "dark");
+                toggleButton.textContent = "☀️";
+            }
+        });
+    }
+});
